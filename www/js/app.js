@@ -30,11 +30,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     }
   })
-  .state('cadastro', {
-    url: '/cadastro',
+  .state('tarefas', {
+    url: '/tarefas',
     views: {
       'view-inicial': {
-        templateUrl: 'templates/cadastro.html',
+        templateUrl: 'templates/tarefas.html',
         controller: 'DashCtrl'
       }
     }

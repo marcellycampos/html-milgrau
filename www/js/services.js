@@ -10,7 +10,6 @@ var config = {
   };
   firebase.initializeApp(config);
 
-
   return {
      get: function() {
        return firebase;
@@ -18,11 +17,10 @@ var config = {
      }
   })   
 
-
 .factory('Login', function(context) { 
  
   return { 
-    login: function(email, senha) { 
+    login: function(email, senha, callback) { 
       firebase.auth().signInWithEmailAndPassword(email, senha)
       .then(function() {
         callback();  
@@ -31,7 +29,7 @@ var config = {
            callback(error);
          });
       },
-   novo: function(email, senha) { 
+   novo: function(email, senha, callback) { 
     firebase.auth().createUserWithEmailAndPassword(email, senha)
       .then(function() {
         callback();  
@@ -42,4 +40,12 @@ var config = {
         }
      };
    })
-
+.factory('Tarefas', function(context) {
+  return { 
+    get: function(callback) { 
+      firebase.database().ref('tarefas').on('value', function(snapshot) { 
+        callback(snapshot.val());
+      })
+   }
+  }
+ })

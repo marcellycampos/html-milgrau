@@ -1,11 +1,17 @@
 angular.module('starter.controllers', [])
 
-.controller('LoginCtrl', function($scope, Login) {
+.controller('LoginCtrl', function($scope, $state, Login) {
   $scope.email = '';
   $scope.senha = '';
 
   $scope.fazerLogin = function(email, senha) {
-    alert(email + senha);
+    Login.login(email, senha, function(erro) { 
+      if (erro) { 
+        alert(erro);
+      } else { 
+        $state.go('tarefas');
+      }
+   });
   }
 
   $scope.novoCadastro = function(email, senha) {
@@ -15,13 +21,19 @@ angular.module('starter.controllers', [])
     }
   }) 
 
- .controller('TarefasCtrl', function($scope) {
-   $scope.tarefas = [
-    {
-      nome: 'tarefa 01'
-  },
-  { 
-      nome: 'tarefa 02'
-    }
-  ];
-})
+ .controller('TarefasCtrl', function($scope, Tarefas) {
+   $scope.tarefas = [];
+     Tarefas.get(function(valores) { 
+      $scope.tarefas = converteObjParaArray(valores);
+      $scope.$apply();
+    });
+ })
+
+   function converteObjParaArray (obj) {
+     var array = [];
+     for (var key in obj) {
+       obj[key].id =key;
+       array.push(obj[key]);
+      }
+      return array;
+ }
